@@ -1,10 +1,6 @@
 const db = require("../config/databaseConnection");
 
 
-
-
-
-
 function postComment(id, comment, user_id, callback) {
   // First, retrieve the post_id associated with the comment
   db.query("SELECT id FROM posts_table WHERE id = ?", [id], (err, rows) => {
@@ -44,8 +40,8 @@ function deleteComment(user_id, id) {
   return new Promise((resolve, reject) => {
     // First, retrieve the user_id associated with the post
     db.query(
-      "SELECT user_id FROM comments_table WHERE user_id = ?",
-      [user_id],
+      "SELECT user_id FROM comments_table WHERE user_id = ? and id = ?",
+      [user_id, id],
       (err, rows) => {
         if (err) {
           reject(err);

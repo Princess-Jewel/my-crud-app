@@ -20,8 +20,8 @@ function deletePost(user_id, id) {
   return new Promise((resolve, reject) => {
     // First, retrieve the user_id associated with the post
     db.query(
-      "SELECT user_id FROM posts_table WHERE user_id = ?",
-      [user_id],
+      "SELECT user_id FROM posts_table WHERE user_id = ? and id = ?",
+      [user_id, id],
       (err, rows) => {
         if (err) {
           reject(err);

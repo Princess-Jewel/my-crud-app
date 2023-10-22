@@ -11,9 +11,9 @@ const validateToken = require("../middleware/validateTokenHandler");
 
 // POST
 // @desc create a post
-// @route POST /posts/create_post
+// @route POST /posts/createPost
 // @access private
-router.post("/create_post", validateToken, async (req, res) => {
+router.post("/createPost", validateToken, async (req, res) => {
     try {
       const { post_title, post_content} = req.body;
       if (!post_title || !post_content) {
@@ -21,8 +21,8 @@ router.post("/create_post", validateToken, async (req, res) => {
         return res.json({ status: "error", error: "All fields are mandatory" });
       }
       const post_email = req.user.email;
-      const user_id = req.user.id;
-      await createPost(post_title, post_content, post_email, user_id);
+      // const user_id = req.user.id;
+      await createPost(post_title, post_content, post_email, req.user.id);
       res
         .status(201)
         .json({ status: "success", message: "Post created successfully" });
@@ -37,8 +37,8 @@ router.post("/create_post", validateToken, async (req, res) => {
   // @access private
   router.delete("/:id", validateToken, async (req, res) => {
     try {
-      const user_id = req.user.id;
-      const affectedRows = await deletePost(user_id, req.params.id);
+      // const user_id = req.user.id;
+      const affectedRows = await deletePost(req.user.id, req.params.id);
       if (affectedRows == 0) res.status(404).json("No record found");
       else
         res
@@ -56,11 +56,11 @@ router.post("/create_post", validateToken, async (req, res) => {
   router.put("/:id",validateToken, async (req, res) => {
     try {
       const { post_title, post_content} = req.body;
-      const user_id = req.user.id;
+      // const user_id = req.user.id;
       const affectedRows = await editPost(
         post_title,
         post_content,
-        user_id,
+        req.user.id,
         req.params.id
       );
     
@@ -82,12 +82,12 @@ router.post("/create_post", validateToken, async (req, res) => {
   // @access private
     router.get("/",validateToken, async (req, res, next) => {
     try {
-      const Rows = await getPostsAndComments();
-      if (Rows == 0) res.status(404).json("No post/record found");
+      const rows = await getPostsAndComments();
+      if (rows == 0) res.status(404).json("No post/record found");
       else
         res
           .status(201)
-          .json({ status: "success", message: "All Posts fetched successfully", data: Rows });
+          .json({ status: "success", message: "All Posts fetched successfully", data: rows });
     } catch (error) {
       res.status(500).json({ status: "error", error: "Internal server error" });
     }

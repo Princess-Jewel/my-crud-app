@@ -10,9 +10,9 @@ const validateToken = require("../middleware/validateTokenHandler");
 
 // POST
 // @desc post a comment
-// @route POST /comments/post_comment
+// @route POST /comments/postComment
 // @access private
-router.post("/post_comment",validateToken, async (req, res) => {
+router.post("/postComment",validateToken, async (req, res) => {
   try {
     const { id, comment } = req.body;
 
@@ -20,9 +20,9 @@ router.post("/post_comment",validateToken, async (req, res) => {
       res.status(400);
       return res.json({ status: "error", error: "All fields are mandatory" });
     }
-    const user_id = req.user.id;
+    // const user_id = req.user.id;
 
-    await postComment(id, comment, user_id, (err, result) => {
+    await postComment(id, comment, req.user.id, (err, result) => {
       if (err) {
    
         return res
@@ -47,8 +47,8 @@ router.post("/post_comment",validateToken, async (req, res) => {
 // @access private
 router.delete("/:id",validateToken, async (req, res) => {
   try {
-    const user_id = req.user.id;
-    const affectedRows = await deleteComment(user_id, req.params.id);
+    // const user_id = req.user.id;
+    const affectedRows = await deleteComment(req.user.id, req.params.id);
     if (affectedRows == 0) res.status(404).json("No record found");
     else
       res
