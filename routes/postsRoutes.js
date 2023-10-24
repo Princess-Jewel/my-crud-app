@@ -5,7 +5,7 @@ const {
   deletePost,
   editPost,
   getPostsAndComments,
-} = require("../models/postsModel");
+} = require("../controllers/postsController");
 const validateToken = require("../middleware/validateTokenHandler");
 
 

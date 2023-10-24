@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser } = require("../models/authModel");
+const { registerUser, loginUser } = require("../controllers/authController");
 const bcrypt = require("bcrypt");
 
 // POST

@@ -7,10 +7,6 @@ const cookieParser = require('cookie-parser');
 
 app.use(cors());
 app.use(express.json());
-// app.use("/auth", require("./routes/commentsRoutes"));
-// app.use("/posts", require("./routes/commentsRoutes"));
-// app.use("/comments", require("./routes/commentsRoutes"));
-
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/posts", require("./routes/postsRoutes"));
 app.use("/comments", require("./routes/commentsRoutes"));

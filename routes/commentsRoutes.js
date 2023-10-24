@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   postComment,
   deleteComment,
-} = require("../models/commentsModel");
+} = require("../controllers/commentsController");
 const validateToken = require("../middleware/validateTokenHandler");
 
 
