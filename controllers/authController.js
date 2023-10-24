@@ -9,8 +9,7 @@ async function registerUser(fname, lname, age, email, password, callback) {
     const user = await Users.findOne({ where: { email: email } });
 
     if (user) {
-      console.log("Email already exists");
-      callback("Email already exists", null); // Email is already in use
+      return res.status(401).json({ error: "Email already exists" }); // Email is already in use
     } else {
       // Email is not in use, proceed with registration
       const newUser = await Users.create({
@@ -22,18 +21,16 @@ async function registerUser(fname, lname, age, email, password, callback) {
       });
 
       if (newUser) {
-        console.log("Registration successful");
         callback(null, {
           message: "Registration successful",
           id: newUser.id,
         });
       } else {
-        callback("Registration failed", null);
+        return res.status(401).json({ error: "Registration failed" });
       }
     }
-  } catch (err) {
-    console.log(err);
-    callback(err, null); // Handle any errors
+  } catch (error) {
+    res.status(500).json({ status: "error", error: "Internal server error" });
   }
 }
 
@@ -42,7 +39,6 @@ async function loginUser(email, password, res) {
     // First check if email exists in the database
     const user = await Users.findOne({ where: { email: email } });
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      console.log("Login failed");
       return res.status(401).json({ error: "Login failed" });
     } else {
       // User exists so proceed with login
@@ -69,8 +65,7 @@ async function loginUser(email, password, res) {
       });
     }
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: error });
+    res.status(500).json({ status: "error", error: "Internal server error" });
   }
 }
 

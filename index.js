@@ -13,7 +13,7 @@ app.use("/comments", require("./routes/commentsRoutes"));
 app.use(errorHandler);
 app.use(cookieParser());
 
-const port = process.env.PORT || 5000;
+const port = 3002 || 5000;
 
 const sequelize = require("./config/databaseConnection");
 
@@ -25,14 +25,15 @@ const Comments = require("./models/comments");
 
 Posts.hasMany(Comments);
 
-sequelize
-  .sync()
-  .then(result => {
-    // console.log(result);
+  sequelize.sync()
+  .then(() => {
+    console.log('Database and tables have been synced.');
   })
-  .catch(err => {
-    // console.log(err);
+  .catch((error) => {
+    console.error('Error syncing the database:', error);
   });
-  app.listen(3002, () => {
-    console.log(`yay! server is running on ${port}`);
+
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
   });
+  
