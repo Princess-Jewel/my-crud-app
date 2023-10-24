@@ -15,15 +15,24 @@ app.use(cookieParser());
 
 const port = process.env.PORT || 5000;
 
-app.listen(3002, () => {
-  console.log(`yay! server is running on ${port}`);
-});
+const sequelize = require("./config/databaseConnection");
 
+const Users = require("./models/users");
 
+const Posts = require("./models/posts");
 
+const Comments = require("./models/comments");
 
+Posts.hasMany(Comments);
 
-
-
-
-
+sequelize
+  .sync()
+  .then(result => {
+    // console.log(result);
+  })
+  .catch(err => {
+    // console.log(err);
+  });
+  app.listen(3002, () => {
+    console.log(`yay! server is running on ${port}`);
+  });
